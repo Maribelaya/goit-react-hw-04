@@ -1,76 +1,100 @@
-import SearchBar from "./SearchBar";
-import ImageModal from "./ImageModal";
-import ImageGallery from "./ImageGallery";
-import LoadMoreBtn from "./LoadMoreBtn";
-import Loader from "./Loader";
-import ErrorMessage from "./ErrorMessage";
-import { useState } from "react";
+import SearchBar from "./SearchBar/SearchBar";
+import ImageModal from "./ImageModal/ImageModal";
+import ImageGallery from "./ImageGallery/ImageGallery";
+import LoadMoreBtn from "./LoadMoreBtn/LoadMoreBtn";
+import Loader from "./Loader/Loader";
+import ErrorMessage from "./ErrorMessage/ErrorMessage";
+import { Toaster } from "react-hot-toast";
+import { useState, useEffect } from "react";
 import { fetchArticles } from "../api";
 
 const App = () => {
-  const [articles, setArticles] = useState([]);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
+  const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const searchArticles = async (newQuery) => {
+    setQuery(`${Date.now()}/${newQuery}`);
+    setPage(1);
+    setArticles([]);
+  };
 
   const handleLoadMore = () => {
     setPage(page + 1);
   };
 
-  // const handleSearch = async (topic) => {
-  //   try {
-  //   setArticles([]);
-  //   setError(false);
-  //     setLoading(true);
-  //     const data = await fetchArticlesWithTopic(topic);
-  //     setArticles(data);
-  //   } catch (error) {
-  //     setError(true);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  const handleSearch = async (query, page) => {
-    try {
-      setArticles([]);
-      setLoading(true);
-      setError(false);
-      fetchArticles();
-
-      // useEffect(() => {
-      //   if (query === "") {
-      //     fetchArticles(query);
-      //     setPage(1);
-
-      //     return;
-      //   }
-      // });
-    } catch (error) {
-      setError(true);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (query === "") {
+      return;
     }
+
+    async function fetchData() {
+      try {
+        setLoading(true);
+        setError(false);
+        const fetchedData = await fetchArticles(query.split("/")[1], page);
+        console.log(fetchedData);
+        setArticles((prevArticles) => [
+          ...prevArticles,
+          ...fetchedData.results,
+        ]);
+      } catch (error) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [query, page]);
+  const openModal = (images) => {
+    setSelectedImage(null);
+    setModalIsOpen(images);
+  };
+  const closeModal = () => {
+    setSelectedImage(null);
+    setModalIsOpen(false);
   };
 
-  const openModal = () => {
-    setIsOpen(true);
-  };
-  const closeModal = () => {};
   return (
-    <>
-      <SearchBar onSearch={handleSearch} />
-      <ImageGallery />
-      <ImageModal isOpen={openModal} />
+    <div>
+      <SearchBar onSearch={searchArticles} />
+      {error && <ErrorMessage message={error} />}
       {loading && <Loader />}
-      {error && <ErrorMessage />}
+      {articles.length > 0 && (
+        <ImageGallery items={articles} openModal={openModal} />
+      )}
+      {articles.length > 0 && !loading && (
+        <button onClick={handleLoadMore}>Load more</button>
+      )}
+
       <LoadMoreBtn handleLoadMore={handleLoadMore} />
-    </>
+      {selectedImage && (
+        <ImageModal
+          images={selectedImage}
+          modalIsOpen={isOpen}
+          closeModal={closeModal}
+        />
+      )}
+      <Toaster position="right-center" />
+    </div>
   );
 };
-
 export default App;
+{
+  /* <div>
+<SearchBar onSubmit={handleSearch} />
+{images.length > 0 && <ImageGallery images={images} onClick={handleImageClick} />}
+{hasMoreImages && images.length > 0 && <LoadMoreBtn onClick={loadMore} />}
+{selectedImage && (
+    <ImageModal
+        images={selectedImage}
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+    />
+)}
+</div> */
+}
