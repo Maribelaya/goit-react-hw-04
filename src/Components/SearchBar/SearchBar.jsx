@@ -25,7 +25,7 @@ const SearchBar = ({ onSearch }) => {
           placeholder="Search images and photos"
           name="query"
         />
-        <button className={css.button} type="submit">
+        <button className={css.btn} type="submit">
           Search
         </button>
       </form>

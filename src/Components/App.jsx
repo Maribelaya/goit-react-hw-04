@@ -50,9 +50,10 @@ const App = () => {
     }
     fetchData();
   }, [query, page]);
+
   const openModal = (images) => {
-    setSelectedImage(null);
-    setModalIsOpen(images);
+    setSelectedImage(images);
+    setModalIsOpen(true);
   };
   const closeModal = () => {
     setSelectedImage(null);
@@ -68,33 +69,17 @@ const App = () => {
         <ImageGallery items={articles} openModal={openModal} />
       )}
       {articles.length > 0 && !loading && (
-        <button onClick={handleLoadMore}>Load more</button>
+        <LoadMoreBtn handleLoadMore={handleLoadMore} />
       )}
-
-      <LoadMoreBtn handleLoadMore={handleLoadMore} />
       {selectedImage && (
         <ImageModal
           images={selectedImage}
-          modalIsOpen={isOpen}
+          modalIsOpen={modalIsOpen}
           closeModal={closeModal}
         />
       )}
-      <Toaster position="right-center" />
+      <Toaster position="right-top" />
     </div>
   );
 };
 export default App;
-{
-  /* <div>
-<SearchBar onSubmit={handleSearch} />
-{images.length > 0 && <ImageGallery images={images} onClick={handleImageClick} />}
-{hasMoreImages && images.length > 0 && <LoadMoreBtn onClick={loadMore} />}
-{selectedImage && (
-    <ImageModal
-        images={selectedImage}
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-    />
-)}
-</div> */
-}

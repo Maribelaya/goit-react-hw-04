@@ -12,11 +12,11 @@ const customStyles = {
   },
 };
 
-const ImageModal = ({ closeModal }) => {
+const ImageModal = ({ modalIsOpen, closeModal, selectedImage }) => {
   return (
     <div>
-      <Modal style={customStyles}>
-        <button onClick={() => closeModal()}>close</button>
+      <Modal isOpen={modalIsOpen} closeModal={closeModal} style={customStyles}>
+        <img src={selectedImage} alt="" />
       </Modal>
     </div>
   );
