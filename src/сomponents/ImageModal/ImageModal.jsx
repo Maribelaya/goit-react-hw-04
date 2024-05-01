@@ -21,7 +21,7 @@ const ImageModal = ({ modalIsOpen, closeModal, selectedImage }) => {
         onRequestClose={closeModal}
         style={customStyles}
       >
-        <img className={css.img} src={selectedImage} alt="" />
+        <img className={css.img} src={selectedImage} alt={selectedImage.alt} />
       </Modal>
     </div>
   );
