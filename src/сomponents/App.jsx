@@ -43,8 +43,9 @@ const App = () => {
           ...prevArticles,
           ...fetchedData.results,
         ]);
+        setError("");
       } catch (error) {
-        setError(true);
+        setError(error);
       } finally {
         setLoading(false);
       }
@@ -64,7 +65,7 @@ const App = () => {
   return (
     <div>
       <SearchBar onSearch={searchArticles} />
-      {error && <ErrorMessage message={error} />}
+      {error && <ErrorMessage />}
       {loading && <Loader />}
       {articles.length > 0 && (
         <ImageGallery items={articles} openModal={openModal} />
