@@ -16,7 +16,6 @@ const App = () => {
   const [error, setError] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  // const [showBtn, setShowBtn] = useState(false);
 
   const searchArticles = async (newQuery) => {
     setQuery(`${Date.now()}/${newQuery}`);
