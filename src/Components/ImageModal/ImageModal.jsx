@@ -1,5 +1,6 @@
 import Modal from "react-modal";
 Modal.setAppElement("#root");
+import css from "./ImageModal.module.css";
 
 const customStyles = {
   content: {
@@ -20,7 +21,7 @@ const ImageModal = ({ modalIsOpen, closeModal, selectedImage }) => {
         onRequestClose={closeModal}
         style={customStyles}
       >
-        <img src={selectedImage} alt="" />
+        <img className={css.img} src={selectedImage} alt="" />
       </Modal>
     </div>
   );

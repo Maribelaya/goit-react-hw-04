@@ -5,12 +5,13 @@ const Loader = () => {
     <div className={css.loader}>
       <ProgressBar
         visible={true}
-        height="80"
-        width="80"
+        height="60"
+        width="60"
         color="#4fa94d"
         ariaLabel="progress-bar-loading"
         wrapperStyle={{}}
         wrapperClass=""
+        position
       />
     </div>
   );
