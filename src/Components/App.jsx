@@ -16,6 +16,7 @@ const App = () => {
   const [error, setError] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  // const [showBtn, setShowBtn] = useState(false);
 
   const searchArticles = async (newQuery) => {
     setQuery(`${Date.now()}/${newQuery}`);
@@ -51,8 +52,8 @@ const App = () => {
     fetchData();
   }, [query, page]);
 
-  const openModal = (images) => {
-    setSelectedImage(images);
+  const openModal = (selectedImage) => {
+    setSelectedImage(selectedImage);
     setModalIsOpen(true);
   };
   const closeModal = () => {
@@ -73,7 +74,7 @@ const App = () => {
       )}
       {selectedImage && (
         <ImageModal
-          images={selectedImage}
+          selectedImage={selectedImage.target.currentSrc}
           modalIsOpen={modalIsOpen}
           closeModal={closeModal}
         />
