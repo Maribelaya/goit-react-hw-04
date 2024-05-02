@@ -1,4 +1,4 @@
-import ImageCard from "../ImageCard/ImageCard";
+import ImageCard from "../../components/ImageCard/ImageCard";
 import css from "./ImageGallery.module.css";
 const ImageGallery = ({ items, openModal }) => {
   return (
